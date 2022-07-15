@@ -1,13 +1,24 @@
 ﻿@page
 @model IndexModel
+
+@using Microsoft.AspNetCore.Identity
+@using WeddingWebsite.Data.Entities
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
 @{
+    Layout = "_FullWidthLayout";
+
     ViewData["Title"] = "Home page";
+
+    var user = await UserManager.GetUserAsync(User);
 }
 
 <div class="section-orange ">
     <div class="container text-center">
         <div class="header top-banner-header" style="padding: 10px 0px;">
-            Alex and Charlie
+            @user.GroupName
         </div>
         <div style="padding-bottom: 20px;font-weight:bold;font-style:italic;">
             We really hope you're free in October next year because...
