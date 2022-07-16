@@ -13,6 +13,7 @@
     ViewData["Title"] = "Home page";
 
     var user = await UserManager.GetUserAsync(User);
+    var name = user?.GroupName ?? "Alex & Charlie"
 }
 
 <div class="section-orange ">
