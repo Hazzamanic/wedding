@@ -13,13 +13,13 @@
     ViewData["Title"] = "Home page";
 
     var user = await UserManager.GetUserAsync(User);
-    var name = user?.GroupName ?? "Alex & Charlie"
+    var name = user?.GroupName ?? "Alex & Charlie";
 }
 
 <div class="section-orange ">
     <div class="container text-center">
         <div class="header top-banner-header" style="padding: 10px 0px;">
-            @user.GroupName
+            @name
         </div>
         <div style="padding-bottom: 20px;font-weight:bold;font-style:italic;">
             We really hope you're free in October next year because...
@@ -159,6 +159,13 @@
         <h3 class="header text-center" style="font-size: 3em; padding-top: 30px;">
             Save the dates!
         </h3>
+        <div class="sub-header">Saturday 7th October 2023 in Lagos, Portugal</div>
+        <div class="text-center">
+            <p>One day isn't enough for all the fun we have planned, so we will be celebrating from Friday 6th through til Tuesday 10th! You are welcome to join us for as much of it as you wish.</p>
+            <p>There are various accommodation options which we will share, but for now to help us gauge initial interest please let us know if you think you would be interested in staying for 4 nights on site. This is non commital at the moment but will help us with our planning!</p>
+            
+        </div>
+
     </div>
 </div>
 
