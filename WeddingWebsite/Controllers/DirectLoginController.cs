@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WeddingWebsite.Data;
 using WeddingWebsite.Data.Entities;
 
@@ -17,16 +18,17 @@ namespace WeddingWebsite.Controllers
         }
 
         [Route("dr")]
-        public async Task<IActionResult> Index(string code, string? redirectTo)
+        public async Task<IActionResult> Index(string code, string? returnUrl = null)
         {
-            var user = _db.Users.FirstOrDefault(e => e.DirectLoginCode == code);
+            returnUrl ??= Url.Content("~/");
+            var user = await _db.Users.FirstOrDefaultAsync(e => e.DirectLoginCode == code);
             if (user == null)
             {
                 return Unauthorized();
             }
 
             await _signInManager.SignInAsync(user, true);
-            return RedirectToRoute("~/");
+            return LocalRedirect(returnUrl);
         }
     }
 }
