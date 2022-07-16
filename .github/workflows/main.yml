@@ -17,3 +17,5 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
           appdir: WeddingWebsite
+        env:
+          ConnectionStrings__DefaultConnection: ${{secrets.CONNECTION_STRING}}
