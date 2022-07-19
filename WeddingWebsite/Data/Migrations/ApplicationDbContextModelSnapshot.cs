@@ -215,6 +215,12 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("SaveTheDateAnswer")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SaveTheDateGuestAnswer")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 

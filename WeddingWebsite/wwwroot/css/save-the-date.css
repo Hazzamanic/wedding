@@ -133,7 +133,7 @@ body {
 }*/
 
 .section-bg-img {
-    background: url("https://s22.postimg.cc/kmomhojxt/Iceland-_Secret-_Solstice-_Festival-million-dollar.jpg") no-repeat center center fixed;
+    background: url("/img/CMC_Tres_39.jpg") no-repeat center center fixed;
     background-size: cover;
     /* Move underneath the backdrop's content. */
     z-index: -2;
