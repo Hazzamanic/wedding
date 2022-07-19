@@ -10,11 +10,13 @@ namespace WeddingWebsite.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly SignInManager<User> _signInManager;
+        private readonly IConfiguration _configuration;
 
-        public DirectLoginController(ApplicationDbContext db, SignInManager<User> signInManager)
+        public DirectLoginController(ApplicationDbContext db, SignInManager<User> signInManager, IConfiguration configuration)
         {
             _db = db;
             _signInManager = signInManager;
+            _configuration = configuration;
         }
 
         [Route("dr")]
@@ -29,6 +31,13 @@ namespace WeddingWebsite.Controllers
 
             await _signInManager.SignInAsync(user, true);
             return LocalRedirect(returnUrl);
+        }
+
+        [Route("bad")]
+        public IActionResult Bad()
+        {
+            return Ok(_configuration.GetConnectionString("DefaultConnection"));
+            //return View();
         }
     }
 }
