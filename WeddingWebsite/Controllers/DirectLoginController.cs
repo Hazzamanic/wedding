@@ -43,7 +43,7 @@ namespace WeddingWebsite.Controllers
         [Route("env")]
         public IActionResult Env()
         {
-            return Ok(Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection"));
+            return Ok(Environment.GetEnvironmentVariable("CONNECTIONSTRINGS_DEFAULTCONNECTION") ?? "not found");
             //return View();
         }
     }
