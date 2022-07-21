@@ -32,12 +32,5 @@ namespace WeddingWebsite.Controllers
             await _signInManager.SignInAsync(user, true);
             return LocalRedirect(returnUrl);
         }
-
-        [Route("bad")]
-        public IActionResult Bad()
-        {
-            return Ok(_configuration.GetConnectionString("DefaultConnection"));
-            //return View();
-        }
     }
 }
