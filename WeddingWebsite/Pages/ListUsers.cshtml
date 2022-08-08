@@ -1,0 +1,26 @@
+﻿@page
+@model WeddingWebsite.Pages.ListUsersModel
+@{
+}
+
+<table class="table">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Guest Name</th>
+        <th>Answer</th>
+        <th>Guest Answer</th>
+    </tr>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>@user.GuestName</td>
+            <td>@user.SaveTheDateAnswer</td>
+            <td>@user.SaveTheDateGuestAnswer</td>
+        </tr>
+
+    }
+
+</table>

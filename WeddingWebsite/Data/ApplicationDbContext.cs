@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WeddingWebsite.Data.Entities;
+using WeddingWebsite.Models;
 
 namespace WeddingWebsite.Data
 {
@@ -10,5 +11,6 @@ namespace WeddingWebsite.Data
             : base(options)
         {
         }
+        public DbSet<WeddingWebsite.Models.UserEditViewModel>? UserEditViewModel { get; set; }
     }
 }
