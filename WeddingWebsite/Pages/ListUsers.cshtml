@@ -3,24 +3,53 @@
 @{
 }
 
-<table class="table">
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Guest Name</th>
-        <th>Answer</th>
-        <th>Guest Answer</th>
-    </tr>
-    @foreach (var user in Model.Users)
-    {
+<div>
+    <a asp-page="CreateUser" class="btn btn-primary">Create User</a>
+</div>
+
+<hr />
+<form asp-action="SendInvite" asp-controller="email">
+    <div class="float-end">
+        <input type="submit" value="Send Invite" />
+    </div>
+    <table class="table">
         <tr>
-            <td>@user.Name</td>
-            <td>@user.Email</td>
-            <td>@user.GuestName</td>
-            <td>@user.SaveTheDateAnswer</td>
-            <td>@user.SaveTheDateGuestAnswer</td>
+            <th><input type="checkbox" onclick="toggle(this)" /></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Guest Name</th>
+            <th>Answer</th>
+            <th>Guest Answer</th>
+            <th></th>
         </tr>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <td><input type="checkbox" name="ids" value="@user.Id" /></td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.GuestName</td>
+                <td>@user.SaveTheDateAnswer</td>
+                <td>@user.SaveTheDateGuestAnswer</td>
+                <td>
+                    <a class="btn btn-outline-primary" asp-page="EditUser" asp-route-id="@user.Id">Edit</a>
+                </td>
+            </tr>
 
-    }
+        }
 
-</table>
+    </table>
+</form>
+
+@section scripts {
+
+    <script type="text/javascript">
+        function toggle(source) {
+            checkboxes = document.getElementsByName('ids');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+
+    </script>
+}

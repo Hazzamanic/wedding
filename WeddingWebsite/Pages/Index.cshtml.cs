@@ -5,9 +5,9 @@ namespace WeddingWebsite.Pages
 {
     public class IndexModel : PageModel
     {
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            RedirectToPage(nameof(SaveTheDateModel));
+            return RedirectToPage("SaveTheDate");
         }
     }
 }
