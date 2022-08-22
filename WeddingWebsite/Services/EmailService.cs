@@ -14,6 +14,8 @@ namespace WeddingWebsite.Services
 
     public class EmailService : IEmailService
     {
+        const string SaveTheDateSubject = "Save the date - Harry is getting Knighted";
+
         private readonly ApplicationDbContext _db;
         private readonly IFluentEmail _fluentEmail;
 
@@ -47,6 +49,7 @@ namespace WeddingWebsite.Services
 
                 await _fluentEmail
                     .To(to)
+                    .Subject(SaveTheDateSubject)
                     .UsingTemplate(template, emailModel)
                     .SendAsync();
 
@@ -58,6 +61,7 @@ namespace WeddingWebsite.Services
 
                     await _fluentEmail
                         .To(toGuest)
+                        .Subject(SaveTheDateSubject)
                         .UsingTemplate(template, emailModel)
                         .SendAsync();
                 }
