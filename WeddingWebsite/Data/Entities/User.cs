@@ -14,6 +14,8 @@ namespace WeddingWebsite.Data.Entities
 
         public string? GuestName { get; set; }
 
+        public string? GuestEmail { get; set; }
+
         public string? SaveTheDateAnswer { get; set; }
 
         public string? SaveTheDateGuestAnswer { get; set; }

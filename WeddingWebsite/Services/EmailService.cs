@@ -3,12 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using WeddingWebsite.Data;
 using WeddingWebsite.Data.Entities;
+using WeddingWebsite.Extensions;
 
 namespace WeddingWebsite.Services
 {
     public interface IEmailService
     {
-        Task SendInvite(IEnumerable<string> userIds);
+        Task SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null);
     }
 
     public class EmailService : IEmailService
@@ -22,7 +23,7 @@ namespace WeddingWebsite.Services
             _fluentEmail = fluentEmail;
         }
 
-        public async Task SendInvite(IEnumerable<string> userIds)
+        public async Task SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null)
         {
             var users = await _db.Users.Where(e => userIds.Contains(e.Id)).ToListAsync();
 
@@ -32,21 +33,46 @@ namespace WeddingWebsite.Services
 
             foreach (var user in users)
             {
+                var loginUrl = $"https://www.harrygetsknighted.com/dr?code={Uri.UnescapeDataString(user.DirectLoginCode)}";
+
+                var to = string.IsNullOrWhiteSpace(toEmail)
+                    ? user.Email
+                    : toEmail;
+
+                var emailModel = new SaveTheDateEmailModel
+                {
+                    Name = user.GetGroupName(),
+                    LoginUrl = loginUrl
+                };
+
                 await _fluentEmail
-                    .To(user.Email)
-                    .UsingTemplate(template, new SaveTheDateEmailModel(user))
+                    .To(to)
+                    .UsingTemplate(template, emailModel)
                     .SendAsync();
+
+                if (!string.IsNullOrWhiteSpace(user.GuestEmail))
+                {
+                    var toGuest = string.IsNullOrWhiteSpace(toEmail)
+                        ? user.GuestEmail
+                        : toEmail;
+
+                    await _fluentEmail
+                        .To(toGuest)
+                        .UsingTemplate(template, emailModel)
+                        .SendAsync();
+                }
             }
         }
 
         private class SaveTheDateEmailModel
         {
-            public SaveTheDateEmailModel(User user)
+            public SaveTheDateEmailModel()
             {
-                Name = user.Name;
+
             }
 
             public string Name { get; set; }
+            public string LoginUrl { get; set; }
         }
     }
 }

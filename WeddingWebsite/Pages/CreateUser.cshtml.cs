@@ -52,6 +52,7 @@ namespace WeddingWebsite.Pages
             public string Email { get; set; }
             public string Name { get; set; }
             public string GuestName { get; set; }
+            public string GuestEmail { get; set; }
             public string GroupName { get; set; }
         }
 
@@ -71,6 +72,7 @@ namespace WeddingWebsite.Pages
                 user.Name = Input.Name;
                 user.GroupName = Input.GroupName;
                 user.GuestName = Input.GuestName;
+                user.GuestEmail = Input.GuestEmail;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
