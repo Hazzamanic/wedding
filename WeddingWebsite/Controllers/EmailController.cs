@@ -29,9 +29,9 @@ namespace WeddingWebsite.Controllers
                 testEmail = currentUser.Email;
             }            
 
-            await _emailService.SendSaveTheDate(ids, testEmail);
+            var results = await _emailService.SendSaveTheDate(ids, testEmail);
 
-            return Redirect("/admin");
+            return Json(results);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace WeddingWebsite.Services
 {
     public interface IEmailService
     {
-        Task SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null);
+        Task<List<EmailResult>> SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null);
     }
 
     public class EmailService : IEmailService
@@ -25,13 +25,15 @@ namespace WeddingWebsite.Services
             _fluentEmail = fluentEmail;
         }
 
-        public async Task SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null)
+        public async Task<List<EmailResult>> SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null)
         {
             var users = await _db.Users.Where(e => userIds.Contains(e.Id)).ToListAsync();
 
             var emailTemplatesPath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName, "EmailTemplates");
 
             var template = await File.ReadAllTextAsync(Path.Combine(emailTemplatesPath, "SaveTheDate.liquid"));
+
+            var results = new List<EmailResult>();
 
             foreach (var user in users)
             {
@@ -47,11 +49,9 @@ namespace WeddingWebsite.Services
                     LoginUrl = loginUrl
                 };
 
-                await _fluentEmail
-                    .To(to)
-                    .Subject(SaveTheDateSubject)
-                    .UsingTemplate(template, emailModel)
-                    .SendAsync();
+                var result = new EmailResult { UserId = user.Id, Email = user.Email };
+                await TrySendEmail(to, emailModel, result);
+                results.Add(result);
 
                 if (!string.IsNullOrWhiteSpace(user.GuestEmail))
                 {
@@ -59,11 +59,31 @@ namespace WeddingWebsite.Services
                         ? user.GuestEmail
                         : toEmail;
 
-                    await _fluentEmail
-                        .To(toGuest)
-                        .Subject(SaveTheDateSubject)
-                        .UsingTemplate(template, emailModel)
-                        .SendAsync();
+                    var guestResult = new EmailResult { UserId = user.Id, Email = user.GuestEmail };
+                    await TrySendEmail(toGuest, emailModel, guestResult);
+                    results.Add(guestResult);
+                }
+            }
+
+            return results;
+
+            async Task TrySendEmail(string to, SaveTheDateEmailModel emailModel, EmailResult emailResult)
+            {
+                try
+                {
+                    var result = await _fluentEmail
+                            .To(to.Trim())
+                            .Subject(SaveTheDateSubject)
+                            .UsingTemplate(template, emailModel)
+                            .SendAsync();
+
+                    emailResult.IsSuccess = result.Successful;
+                    emailResult.ErrorMessage = result.ErrorMessages?.Any() == true ? String.Join(',', result.ErrorMessages) : null;
+                }
+                catch (Exception ex)
+                {
+                    emailResult.IsSuccess = false;
+                    emailResult.ErrorMessage = ex.Message;
                 }
             }
         }
@@ -78,5 +98,13 @@ namespace WeddingWebsite.Services
             public string Name { get; set; }
             public string LoginUrl { get; set; }
         }
+    }
+
+    public class EmailResult
+    {
+        public string UserId { get; set; }
+        public string Email { get; set; }
+        public bool IsSuccess { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 }

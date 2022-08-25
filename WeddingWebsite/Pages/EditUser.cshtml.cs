@@ -80,6 +80,8 @@ namespace WeddingWebsite.Pages
             public string GroupName { get; set; }
         }
 
+        public string DirectLoginCode { get; set; }
+
 
         public async Task OnGetAsync(string id)
         {
@@ -93,6 +95,8 @@ namespace WeddingWebsite.Pages
                 Name = user.Name,
                 GuestEmail = user.GuestEmail,
             };
+
+            DirectLoginCode = user.DirectLoginCode;
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -100,6 +104,7 @@ namespace WeddingWebsite.Pages
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(Input.Id);
+                DirectLoginCode = user.DirectLoginCode;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
