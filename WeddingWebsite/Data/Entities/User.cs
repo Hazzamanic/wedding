@@ -19,5 +19,9 @@ namespace WeddingWebsite.Data.Entities
         public string? SaveTheDateAnswer { get; set; }
 
         public string? SaveTheDateGuestAnswer { get; set; }
+
+        public bool HasSentSaveTheDateEmail { get; set; }
+
+        public bool HasSentGuestSaveTheDateEmail { get; set; }
     }
 }

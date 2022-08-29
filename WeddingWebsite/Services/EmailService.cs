@@ -27,13 +27,18 @@ namespace WeddingWebsite.Services
 
         public async Task<List<EmailResult>> SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null)
         {
-            var users = await _db.Users.Where(e => userIds.Contains(e.Id)).ToListAsync();
+            var users = await _db.Users
+                .Where(e => userIds.Contains(e.Id))
+                .AsNoTracking()
+                .ToListAsync();
 
             var emailTemplatesPath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName, "EmailTemplates");
 
             var template = await File.ReadAllTextAsync(Path.Combine(emailTemplatesPath, "SaveTheDate.liquid"));
 
             var results = new List<EmailResult>();
+
+            var hasToEmail = !string.IsNullOrWhiteSpace(toEmail);
 
             foreach (var user in users)
             {
@@ -51,6 +56,10 @@ namespace WeddingWebsite.Services
 
                 var result = new EmailResult { UserId = user.Id, Email = user.Email };
                 await TrySendEmail(to, emailModel, result);
+                if (!hasToEmail && result.IsSuccess)
+                {
+                    await MarkSaveTheDateSent(user.Id);
+                }
                 results.Add(result);
 
                 if (!string.IsNullOrWhiteSpace(user.GuestEmail))
@@ -61,6 +70,11 @@ namespace WeddingWebsite.Services
 
                     var guestResult = new EmailResult { UserId = user.Id, Email = user.GuestEmail };
                     await TrySendEmail(toGuest, emailModel, guestResult);
+                    if (!hasToEmail && guestResult.IsSuccess)
+                    {
+                        await MarkSaveTheDateSentForGuest(user.Id);
+                    }
+
                     results.Add(guestResult);
                 }
             }
@@ -85,6 +99,20 @@ namespace WeddingWebsite.Services
                     emailResult.IsSuccess = false;
                     emailResult.ErrorMessage = ex.Message;
                 }
+            }
+
+            async Task MarkSaveTheDateSent(string userId)
+            {
+                var user = new User { Id = userId, HasSentSaveTheDateEmail = true };
+                _db.Users.Attach(user).Property(x => x.HasSentSaveTheDateEmail).IsModified = true;
+                await _db.SaveChangesAsync();
+            }
+
+            async Task MarkSaveTheDateSentForGuest(string userId)
+            {
+                var user = new User { Id = userId, HasSentGuestSaveTheDateEmail = true };
+                _db.Users.Attach(user).Property(x => x.HasSentGuestSaveTheDateEmail).IsModified = true;
+                await _db.SaveChangesAsync();
             }
         }
 

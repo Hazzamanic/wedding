@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WeddingWebsite.Data;
@@ -29,7 +30,12 @@ namespace WeddingWebsite.Controllers
                 return Unauthorized();
             }
 
-            await _signInManager.SignInAsync(user, true);
+            await _signInManager.SignInAsync(user, new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddYears(1),
+
+            });
             return LocalRedirect(returnUrl);
         }
     }
