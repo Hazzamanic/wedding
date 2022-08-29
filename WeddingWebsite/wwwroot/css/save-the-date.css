@@ -1,6 +1,3 @@
-
-@import 'https://fonts.googleapis.com/css?family=Rock+Salt';
-
 html {
     font-size: 14px;
     color: white;
@@ -72,7 +69,7 @@ body {
 
 .sub-header {
     font-size: 25px;
-    font-family: 'Rock Salt', sans-serif;
+    font-family: 'Rock Salt', cursive;
     margin-top: 10px
 }
 
@@ -146,7 +143,7 @@ body {
 }
 
 .top-banner-header {
-    font-family: 'Rock Salt', sans-serif;
+    font-family: 'Rock Salt', cursive;
 }
 
 .polaroid {
@@ -183,7 +180,7 @@ body {
         color: black;
         text-align: center;
         letter-spacing: .1em;
-        font-family: "Rock Salt", sans-serif;
+        font-family: "Rock Salt", cursive;
         margin-top: 10px;
     }
 
