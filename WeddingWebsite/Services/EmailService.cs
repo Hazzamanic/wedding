@@ -58,7 +58,7 @@ namespace WeddingWebsite.Services
                 await TrySendEmail(to, emailModel, result);
                 if (!hasToEmail && result.IsSuccess)
                 {
-                    await MarkSaveTheDateSent(user.Id);
+                    await MarkSaveTheDateSent(user);
                 }
                 results.Add(result);
 
@@ -72,7 +72,7 @@ namespace WeddingWebsite.Services
                     await TrySendEmail(toGuest, emailModel, guestResult);
                     if (!hasToEmail && guestResult.IsSuccess)
                     {
-                        await MarkSaveTheDateSentForGuest(user.Id);
+                        await MarkSaveTheDateSentForGuest(user);
                     }
 
                     results.Add(guestResult);
@@ -101,17 +101,19 @@ namespace WeddingWebsite.Services
                 }
             }
 
-            async Task MarkSaveTheDateSent(string userId)
+            async Task MarkSaveTheDateSent(User user)
             {
-                var user = new User { Id = userId, HasSentSaveTheDateEmail = true };
-                _db.Users.Attach(user).Property(x => x.HasSentSaveTheDateEmail).IsModified = true;
+                user.HasSentSaveTheDateEmail = true;
+                _db.Users.Update(user);
+               // _db.Entry(user).Property(x => x.HasSentSaveTheDateEmail).IsModified = true;
                 await _db.SaveChangesAsync();
             }
 
-            async Task MarkSaveTheDateSentForGuest(string userId)
+            async Task MarkSaveTheDateSentForGuest(User user)
             {
-                var user = new User { Id = userId, HasSentGuestSaveTheDateEmail = true };
-                _db.Users.Attach(user).Property(x => x.HasSentGuestSaveTheDateEmail).IsModified = true;
+                user.HasSentGuestSaveTheDateEmail = true;
+                _db.Users.Update(user);
+                // _db.Entry(user).Property(x => x.HasSentSaveTheDateEmail).IsModified = true;
                 await _db.SaveChangesAsync();
             }
         }
