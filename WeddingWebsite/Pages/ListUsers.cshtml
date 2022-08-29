@@ -20,6 +20,7 @@
             <th>Guest Name</th>
             <th>Answer</th>
             <th>Guest Answer</th>
+            <th>Sent</th>
             <th></th>
         </tr>
         @foreach (var user in Model.Users)
@@ -31,6 +32,7 @@
                 <td>@user.GuestName</td>
                 <td>@user.SaveTheDateAnswer</td>
                 <td>@user.SaveTheDateGuestAnswer</td>
+                <td>@user.HasSentSaveTheDateEmail</td>
                 <td>
                     <a class="btn btn-outline-primary" asp-page="EditUser" asp-route-id="@user.Id">Edit</a>
                 </td>
