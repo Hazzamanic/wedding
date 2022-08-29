@@ -1,0 +1,20 @@
+﻿@page
+@model UploadModel
+@{
+    ViewData["Title"] = "Upload";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        <form method="post" enctype="multipart/form-data">
+            <input type="file" asp-for="Upload" />
+            <input type="submit" value="Upload Users" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

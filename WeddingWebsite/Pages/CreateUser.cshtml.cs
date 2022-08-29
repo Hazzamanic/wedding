@@ -74,7 +74,11 @@ namespace WeddingWebsite.Pages
                 user.GuestName = Input.GuestName;
                 user.GuestEmail = Input.GuestEmail;
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                var username = string.IsNullOrWhiteSpace(Input.Email)
+                    ? Guid.NewGuid().ToString()
+                    : Input.Email;
+
+                await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Guid.NewGuid().ToString());
 
