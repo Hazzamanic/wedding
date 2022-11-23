@@ -84,8 +84,13 @@ namespace WeddingWebsite.Pages
         public string DirectLoginCode { get; set; }
 
 
-        public async Task OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string id, bool myself = false)
         {
+            if(myself)
+            {
+                id = _userManager.GetUserId(User);
+            }
+
             var user = await _userManager.FindByIdAsync(id);
             Input = new InputModel
             {
@@ -99,6 +104,7 @@ namespace WeddingWebsite.Pages
             };
 
             DirectLoginCode = user.DirectLoginCode;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
