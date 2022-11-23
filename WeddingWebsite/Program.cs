@@ -5,6 +5,7 @@ using WeddingWebsite.Data.Entities;
 using Microsoft.AspNetCore.Identity;
 using WeddingWebsite.Services;
 using WeddingWebsite.Settings;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,9 @@ builder.Services
     .AddLiquidRenderer();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext<ApplicationDbContext>();
 
 var app = builder.Build();
 
