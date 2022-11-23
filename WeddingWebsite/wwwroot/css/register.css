@@ -154,6 +154,16 @@ body {
     }
 }
 
+.btn-rsvp {
+    display: block;
+    padding:20px;
+    border: 4px solid #FFF;
+    border-radius: 25px;
+    margin: auto;
+    color: white;
+    text-decoration: none;
+}
+
 /*.section-bg-img::after, .section-bg-img::before {
     content: "";
     position: absolute;
