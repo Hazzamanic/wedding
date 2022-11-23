@@ -1,0 +1,59 @@
+﻿@model WeddingWebsite.Pages.ConfirmationModel.AnswerModel
+
+
+@{
+
+}
+
+<h2 class="sub-header">@Model.Name</h2>
+<div class="row">
+    <div class="col-md-8 col-lg-9">
+        <p>Can @Model.Name make it?</p>
+    </div>
+    <div class="col-md-4 col-lg-3">
+        @Model.IsAttending
+    </div>
+</div>
+@if (Model.IsAttending == "Yes")
+{
+    <div class="row">
+        <div class="col-md-8 col-lg-9">
+            <p>To the pizza party on Friday evening?</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            @Model.PizzaParty
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-lg-9">
+            <p>To the brunch on Sunday?</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            @Model.Brunch
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-lg-9">
+            <p>Requested accommodation</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            @Model.JoinAccommodationList
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-lg-9">
+            <p>Dietary Requirements</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            @Model.DietaryRequirements
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-lg-9">
+            <p>Song Request</p>
+        </div>
+        <div class="col-md-4 col-lg-3">
+            @Model.SongRequest
+        </div>
+    </div>
+}

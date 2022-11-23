@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeddingWebsite.Data;
@@ -11,9 +12,10 @@ using WeddingWebsite.Data;
 namespace WeddingWebsite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221113173449_RegisterAnswers")]
+    partial class RegisterAnswers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,10 +185,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<string>("GroupName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Guest1AccommodationList")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Guest1Brunch")
                         .IsRequired()
                         .HasColumnType("text");
@@ -204,10 +202,6 @@ namespace WeddingWebsite.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Guest1SongRequest")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Guest2AccommodationList")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -240,9 +234,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<bool>("HasGuest")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HasResponded")
-                        .HasColumnType("boolean");
-
                     b.Property<bool>("HasSentGuestSaveTheDateEmail")
                         .HasColumnType("boolean");
 
@@ -269,10 +260,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
-
-                    b.Property<string>("PartyType")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");

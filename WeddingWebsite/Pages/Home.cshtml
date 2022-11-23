@@ -1,4 +1,4 @@
-﻿@page "/home"
+﻿@page "/"
 @model HomeModel
 
 @using Microsoft.AspNetCore.Identity
@@ -84,7 +84,7 @@
     </div>
 </div>
 
-<div class="section-pizza section-bottom-border" style="min">
+<div class="section-pizza section-bottom-border" id="home-pizza">
     <div class="container p-5">
         <div class="row">
             <div class="col-md-7">
@@ -131,7 +131,36 @@
     </div>
 </div>
 
-<div class="section section-blue section-bottom-border">
+<div class="section-red section-bottom-border" id="home-wedding">
+    <div class="container p-5">
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <partial name="_WeddingDay" />
+            </div>
+            <div class="col-md-7">
+                <h3 class="header text-center" style="font-size: 5em; padding-top: 30px;">
+                    Wedding Day!
+                </h3>
+                <div class="sub-header text-center" style="padding-top: 30px; padding-bottom: 10px; font-size: 1em">
+                    Saturday 7th October
+                </div>
+                <div class="text-center fw-bold">
+                    <p>~~~</p>
+                    <p>Breakfast will be served at the villas at 9am, with plenty of time for a dip in the hot tub, splash in the pool, drink from the bar and some lunch (we'll provide a cold selection of food at the villas for self service)</p>
+                    <p>
+                        Ceremony at 3pm <br /> 
+                        Drinks & Canapes from 4pm <br />
+                        BBQ Feast & speeches from 5pm <br />
+                        DJ & Dessert from 7pm <br />
+                        11pm Music ends, party continues around the pool for those who want to carry on!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section section-blue section-bottom-border"  id="home-brunch">
     <partial name="_PoolParty" />
     <div class="container pb-5">
         <div class="row">
@@ -178,7 +207,7 @@
                         </div>
                     </div>
                     <div class="col-md">
-                        <div class="polaroid polaroid-r-l img-center" style="max-width: 250px;">
+                        <div class="polaroid polaroid-r-r img-center" style="max-width: 250px;">
                             <div class="polaroid-img">
                                 <div class="gloss"></div>
                                 <img src="/img/tonysue1.jfif" />

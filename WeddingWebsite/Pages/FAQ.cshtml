@@ -1,0 +1,35 @@
+﻿@page "/faq"
+@model FaqModel
+
+@using Microsoft.AspNetCore.Identity
+@using WeddingWebsite.Data.Entities
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    Layout = "_RegisterLayout";
+
+    ViewData["Title"] = "Register";
+}
+
+<div style="width: 100%;">
+    <div class="section-bg-img"></div>
+    <div class="container">
+        <div class="text-center p-4">
+            <div class="name">FAQ</div>
+        </div>
+    </div>
+</div>
+
+<div class="section-yellow section-bottom-border section-bottom-border">
+    <div class="container ">
+        <div class="row">
+            <div class="col-md-7 mx-auto">
+                <div class="m-5">
+                    <partial name="_FAQ" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

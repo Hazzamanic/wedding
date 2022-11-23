@@ -23,11 +23,11 @@ namespace WeddingWebsite.Controllers
         public async Task<IActionResult> SendInvite(string[] ids, bool isTest)
         {
             string? testEmail = null;
-            if(isTest)
+            if (isTest)
             {
                 var currentUser = await _userManager.GetUserAsync(User);
                 testEmail = currentUser.Email;
-            }            
+            }
 
             var results = await _emailService.SendSaveTheDate(ids, testEmail);
 

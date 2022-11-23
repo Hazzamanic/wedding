@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WeddingWebsite.Data;
@@ -11,9 +12,10 @@ using WeddingWebsite.Data;
 namespace WeddingWebsite.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221121215154_PartyTypeAndRespondedFlags")]
+    partial class PartyTypeAndRespondedFlags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,10 +185,6 @@ namespace WeddingWebsite.Data.Migrations
                     b.Property<string>("GroupName")
                         .HasColumnType("text");
 
-                    b.Property<string>("Guest1AccommodationList")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Guest1Brunch")
                         .IsRequired()
                         .HasColumnType("text");
@@ -204,10 +202,6 @@ namespace WeddingWebsite.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Guest1SongRequest")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Guest2AccommodationList")
                         .IsRequired()
                         .HasColumnType("text");
 

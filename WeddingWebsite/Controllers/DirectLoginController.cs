@@ -36,6 +36,9 @@ namespace WeddingWebsite.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddYears(1),
 
             });
+
+            return RedirectToPage("Home");
+
             return LocalRedirect(returnUrl);
         }
     }

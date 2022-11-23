@@ -8,13 +8,13 @@ using WeddingWebsite.Data.Entities;
 namespace WeddingWebsite.Pages
 {
     [Authorize]
-    public class RegisterModel : PageModel
+    public class ConfirmationModel : PageModel
     {
-        private readonly ILogger<RegisterModel> _logger;
+        private readonly ILogger<ConfirmationModel> _logger;
         private readonly UserManager<User> UserManager;
         private readonly ApplicationDbContext _db;
 
-        public RegisterModel(ILogger<RegisterModel> logger, UserManager<User> userManager, ApplicationDbContext db)
+        public ConfirmationModel(ILogger<ConfirmationModel> logger, UserManager<User> userManager, ApplicationDbContext db)
         {
             _logger = logger;
             UserManager = userManager;
@@ -30,6 +30,7 @@ namespace WeddingWebsite.Pages
 
         public class AnswerModel
         {
+            public string Name { get; set; }
             public string IsAttending { get; set; }
             public string PizzaParty { get; set; }
             public string WeddingDay { get; set; }
@@ -45,30 +46,19 @@ namespace WeddingWebsite.Pages
 
         public string? Name { get; set; }
 
-        public string? Guest1Name { get; set; }
-        public string? Guest2Name { get; set; }
-
         public bool CanSubmit { get; set; }
 
         [BindProperty]
         public InputModel Input { get; set; }
 
-        public async Task<IActionResult> OnGet(bool update = false)
+        public async Task OnGet(bool update = false)
         {
             var user = await UserManager.GetUserAsync(User);
-
-            if(user.HasResponded && !update)
-            {
-                return RedirectToPage("Confirmation");
-            }
 
             CurrentUser = user;
             CanSubmit = update || string.IsNullOrWhiteSpace(user.SaveTheDateAnswer);
 
-            Input = new InputModel
-            {
-                
-            };
+            Input = new InputModel();
 
             Input.Guest1.IsAttending = user.Guest1IsAttending;
             Input.Guest1.PizzaParty = user.Guest1PizzaParty;
@@ -76,6 +66,7 @@ namespace WeddingWebsite.Pages
             Input.Guest1.JoinAccommodationList = user.Guest1AccommodationList;
             Input.Guest1.DietaryRequirements = user.Guest1DietaryRequirements;
             Input.Guest1.SongRequest = user.Guest1SongRequest;
+            Input.Guest1.Name = user.Name;
 
             Input.Guest2.IsAttending = user.Guest2IsAttending; 
             Input.Guest2.PizzaParty = user.Guest2PizzaParty; 
@@ -83,11 +74,9 @@ namespace WeddingWebsite.Pages
             Input.Guest2.JoinAccommodationList = user.Guest2AccommodationList;
             Input.Guest2.DietaryRequirements = user.Guest2DietaryRequirements;
             Input.Guest2.SongRequest = user.Guest2SongRequest;
+            Input.Guest2.Name = user.GuestName;
 
             Input.MoreInfo = user.MoreInfoRequest;
-
-            Guest1Name = user.Name;
-            Guest2Name = user.GuestName;
 
 
             Name = !string.IsNullOrWhiteSpace(user.GroupName) ?
@@ -95,37 +84,6 @@ namespace WeddingWebsite.Pages
                 string.IsNullOrWhiteSpace(user.GuestName) ?
                     user.Name :
                     $"{user.Name} & {user.GuestName}";
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var user = await UserManager.GetUserAsync(User);
-
-            user.Guest1IsAttending = Input.Guest1.IsAttending;
-            user.Guest1PizzaParty = Input.Guest1.PizzaParty;
-            user.Guest1Brunch = Input.Guest1.Brunch;
-            user.Guest1AccommodationList = Input.Guest1.JoinAccommodationList;
-            user.Guest1DietaryRequirements = Input.Guest1.DietaryRequirements;
-            user.Guest1SongRequest = Input.Guest1.SongRequest;
-
-            if (!string.IsNullOrWhiteSpace(user.GuestName))
-            {
-                user.Guest2IsAttending = Input.Guest2.IsAttending;
-                user.Guest2PizzaParty = Input.Guest2.PizzaParty;
-                user.Guest2Brunch = Input.Guest2.Brunch;
-                user.Guest2AccommodationList = Input.Guest2.JoinAccommodationList;
-                user.Guest2DietaryRequirements = Input.Guest2.DietaryRequirements;
-                user.Guest2SongRequest = Input.Guest2.SongRequest;
-            }
-
-            user.MoreInfoRequest = Input.MoreInfo;
-            user.HasResponded = true;
-
-            await _db.SaveChangesAsync();
-
-            return RedirectToPage("Confirmation");
         }
     }
 }

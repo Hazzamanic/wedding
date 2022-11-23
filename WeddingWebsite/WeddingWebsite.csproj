@@ -9,6 +9,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Pages\Shared\_WeddingDay.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="EmailTemplates\SaveTheDate.liquid" />
 	</ItemGroup>
 
@@ -16,6 +20,10 @@
 	  <Content Include="EmailTemplates\SaveTheDate.liquid">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Pages\Shared\_WeddingDay.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
