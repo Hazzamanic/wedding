@@ -673,3 +673,122 @@ body {
         transform: translate(0) rotate(0);
     }
 }
+
+/* Sad face */
+.face-container {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    border: 4px solid #FFF;
+    border-radius: 25px;
+    margin: auto;
+}
+
+.sad-face {
+    z-index: 1;
+    width: 30px;
+    border-style: solid;
+    border-width: 4px;
+    margin-top:30px;
+    border-color: #FFF transparent transparent transparent;
+    border-radius: 50%;
+    height: 30px;
+    animation: anim-sad 5s infinite;
+}
+
+    .sad-face::before, .sad-face::after {
+        top: -20px;
+        position: absolute;
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        animation: blink 10s infinite;
+        animation-delay: 0s;
+    }
+
+    .sad-face::after {
+        left: 0px;
+    }
+
+    .sad-face::before {
+        right: 0px;
+    }
+
+    .sad-face::before, .sad-face::after {
+        animation-delay: 1.3s;
+        background-color: #FFF;
+    }
+
+@keyframes anim-sad {
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    49% {
+        transform: rotateZ(0deg);
+    }
+
+    50% {
+        transform: rotateZ(0deg);
+    }
+
+    70% {
+        transform: rotateZ(-10deg);
+    }
+
+    90% {
+        transform: rotateZ(-10deg);
+    }
+
+    100% {
+        transform: translateX(0deg);
+    }
+}
+
+
+@keyframes blink {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    10% {
+        transform: scale(1, 1);
+    }
+
+    11% {
+        transform: scale(1, .1);
+    }
+
+    12% {
+        transform: scale(1, 1);
+    }
+
+    30% {
+        transform: scale(1, 1);
+    }
+
+    31% {
+        transform: scale(1, .1);
+    }
+
+    32% {
+        transform: scale(1, 1);
+    }
+
+    60% {
+        transform: scale(1, 1);
+    }
+
+    61% {
+        transform: scale(1, .1);
+    }
+
+    62% {
+        transform: scale(1, 1);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
