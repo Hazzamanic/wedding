@@ -25,7 +25,7 @@ namespace WeddingWebsite.Pages
 
             var userRoles = (await _db.UserRoles.ToListAsync()).Select(e => e.UserId);
 
-            Users = users.Where(e => !userRoles.Contains(e.Id)).ToList();
+            Users = users.Where(e => !userRoles.Contains(e.Id)).OrderBy(e => e.Name).ToList();
         }
     }
 }

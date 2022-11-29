@@ -38,5 +38,6 @@ namespace WeddingWebsite.Data.Entities
         public string MoreInfoRequest { get; set; }
         public string PartyType { get; set; }
         public bool HasResponded { get; set; }
+        public DateTime? RespondedAt { get; set; }
     }
 }

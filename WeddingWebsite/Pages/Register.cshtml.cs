@@ -123,6 +123,8 @@ namespace WeddingWebsite.Pages
             user.MoreInfoRequest = Input.MoreInfo;
             user.HasResponded = true;
 
+            if (user.RespondedAt is null) user.RespondedAt = DateTime.UtcNow;
+
             await _db.SaveChangesAsync();
 
             return RedirectToPage("Confirmation");
