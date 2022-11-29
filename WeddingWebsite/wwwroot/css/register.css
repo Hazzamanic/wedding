@@ -614,6 +614,7 @@ body {
 
 /* Kissing animation */
 .kiss-outer {
+    position: relative;
     min-height: 300px;
 }
 
