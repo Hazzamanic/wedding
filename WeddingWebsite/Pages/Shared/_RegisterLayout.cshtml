@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using WeddingWebsite.Data.Entities
+@using WeddingWebsite.Extensions;
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    var isLoggedIn = SignInManager.IsSignedIn(User);
+    User? user = isLoggedIn ? await UserManager.GetUserAsync(User) : null;
+
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,7 +35,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Home">Itinerary</a>
-                        </li>                        
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Accommodation">Accommodation</a>
                         </li>
@@ -33,21 +46,47 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/FAQ">FAQ</a>
                         </li>
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <ul class="navbar-nav">
+                        @if (isLoggedIn)
+                        {
+                            var name = user.GetGroupName();
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">Hello @name!</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-primary text-light" style="padding-right: 20px; padding-left: 20px" asp-area="" asp-page="/Register">RSVP</a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
+    @if (isLoggedIn && !user.HasResponded)
+    {
+        <div class="section-purple">
+            <div class="container fw-bold p-2 text-center" style="font-size: 18px">
+                <a asp-page="/register" class="text-white">Click here to RSVP</a>
+            </div>
+        </div>
+    }
     <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-@*    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Harry Gets Knighted - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
+    @*    <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2022 - Harry Gets Knighted - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    </div>
     </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
