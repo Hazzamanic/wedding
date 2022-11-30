@@ -37,7 +37,7 @@ namespace WeddingWebsite.Controllers
 
             });
 
-            return RedirectToPage("Home");
+            return RedirectToPage("/Home");
 
             return LocalRedirect(returnUrl);
         }
