@@ -17,9 +17,9 @@ namespace WeddingWebsite.Services
         const string SaveTheDateSubject = "Real RSVP - Harry & Sinead are getting married!";
 
         private readonly ApplicationDbContext _db;
-        private readonly IFluentEmail _fluentEmail;
+        private readonly IFluentEmailFactory _fluentEmail;
 
-        public EmailService(ApplicationDbContext db, IFluentEmail fluentEmail)
+        public EmailService(ApplicationDbContext db, IFluentEmailFactory fluentEmail)
         {
             _db = db;
             _fluentEmail = fluentEmail;
@@ -54,42 +54,38 @@ namespace WeddingWebsite.Services
                     LoginUrl = loginUrl
                 };
 
-                var result = new EmailResult { UserId = user.Id, Email = user.Email };
-                await TrySendEmail(to, emailModel, result);
+                var cc = string.IsNullOrWhiteSpace(toEmail)
+                    ? user.GuestEmail
+                    : toEmail;
+
+                var result = new EmailResult { UserId = user.Id, Email = to, Cc = cc };
+                await TrySendEmail(to, cc, emailModel, result);
+
                 if (!hasToEmail && result.IsSuccess)
                 {
                     await MarkSaveTheDateSent(user);
                 }
                 results.Add(result);
-
-                if (!string.IsNullOrWhiteSpace(user.GuestEmail))
-                {
-                    var toGuest = string.IsNullOrWhiteSpace(toEmail)
-                        ? user.GuestEmail
-                        : toEmail;
-
-                    var guestResult = new EmailResult { UserId = user.Id, Email = user.GuestEmail };
-                    await TrySendEmail(toGuest, emailModel, guestResult);
-                    if (!hasToEmail && guestResult.IsSuccess)
-                    {
-                        await MarkSaveTheDateSentForGuest(user);
-                    }
-
-                    results.Add(guestResult);
-                }
             }
 
             return results;
 
-            async Task TrySendEmail(string to, SaveTheDateEmailModel emailModel, EmailResult emailResult)
+            async Task TrySendEmail(string to, string? cc, SaveTheDateEmailModel emailModel, EmailResult emailResult)
             {
                 try
                 {
-                    var result = await _fluentEmail
+                    var email = _fluentEmail
+                            .Create()
                             .To(to.Trim())
                             .Subject(SaveTheDateSubject)
-                            .UsingTemplate(template, emailModel)
-                            .SendAsync();
+                            .UsingTemplate(template, emailModel);
+
+                    if(!string.IsNullOrWhiteSpace(cc))
+                    {
+                        email.CC(cc.Trim());
+                    }
+
+                    var result = await email.SendAsync();
 
                     emailResult.IsSuccess = result.Successful;
                     emailResult.ErrorMessage = result.ErrorMessages?.Any() == true ? String.Join(',', result.ErrorMessages) : null;
@@ -134,6 +130,7 @@ namespace WeddingWebsite.Services
     {
         public string UserId { get; set; }
         public string Email { get; set; }
+        public string Cc { get; set; }
         public bool IsSuccess { get; set; }
         public string? ErrorMessage { get; set; }
     }
