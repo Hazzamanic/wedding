@@ -14,7 +14,7 @@ namespace WeddingWebsite.Services
 
     public class EmailService : IEmailService
     {
-        const string SaveTheDateSubject = "RSVP - Harry & Sinead are getting married!";
+        const string SaveTheDateSubject = "Real RSVP - Harry & Sinead are getting married!";
 
         private readonly ApplicationDbContext _db;
         private readonly IFluentEmail _fluentEmail;
