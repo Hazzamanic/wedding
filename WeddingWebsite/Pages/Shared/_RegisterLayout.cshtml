@@ -83,11 +83,27 @@
         </main>
     </div>
 
-    @*    <footer class="border-top footer text-muted">
-    <div class="container">
-    &copy; 2022 - Harry Gets Knighted - <a asp-area="" asp-page="/Privacy">Privacy</a>
-    </div>
-    </footer>*@
+    <footer class="border-top footer text-muted" style="background-color: white">
+        <div class="container">
+            <ul class="navbar-nav flex-grow-1 flex-column flex-sm-row justify-content-between">
+                <li class="nav-item p-3">
+                    <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Home">Itinerary</a>
+                </li>
+                <li class="nav-item p-3">
+                    <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Accommodation">Accommodation</a>
+                </li>
+                <li class="nav-item p-3">
+                    <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Travel">Travel</a>
+                </li>
+                <li class="nav-item p-3">
+                    <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/FAQ">FAQ</a>
+                </li>
+                <li class="nav-item p-3">
+                    <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Register">RSVP</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

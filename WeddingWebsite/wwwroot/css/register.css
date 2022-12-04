@@ -133,6 +133,15 @@ body {
         text-shadow: 2px 2px palegreen;
     }
 
+    .section-red a {
+        color: white;
+    }
+
+    .section-red a:hover {
+        font-weight: bolder;
+        color: white;
+    }
+
 .section-pizza {
     background-color: #F2F2B8;
     color: rgba(0,0,0,.9);
