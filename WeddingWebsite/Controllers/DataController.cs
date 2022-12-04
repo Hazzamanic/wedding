@@ -26,6 +26,7 @@ namespace WeddingWebsite.Controllers
                 GuestName = e.GuestName,
                 HasResponded = e.HasResponded,
                 RespondedAt = e.RespondedAt,
+                Email = e.Email,
                 GuestEmail = e.GuestEmail,
                 PartyType = e.PartyType,
                 //SaveTheDateAnswer = e.SaveTheDateAnswer,
@@ -67,6 +68,7 @@ namespace WeddingWebsite.Controllers
         public bool HasResponded { get; set; }
 
         public DateTime? RespondedAt { get; set; }
+        public string? Email { get; set; }
 
         public string? GuestEmail { get; set; }
 
