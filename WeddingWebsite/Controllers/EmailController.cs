@@ -33,5 +33,20 @@ namespace WeddingWebsite.Controllers
 
             return Json(results);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SendAccommodationConfirmation(string[] ids, bool isTest)
+        {
+            string? testEmail = null;
+            if (isTest)
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                testEmail = currentUser.Email;
+            }
+
+            var results = await _emailService.SendEmail(ids, "AccommodationConfirmation.liquid", "Accommodation Update - Harry & Sinead's Wedding", testEmail);
+
+            return Json(results);
+        }
     }
 }

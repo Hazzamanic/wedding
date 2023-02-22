@@ -9,6 +9,7 @@ namespace WeddingWebsite.Services
 {
     public interface IEmailService
     {
+        Task<List<EmailResult>> SendEmail(IEnumerable<string> userIds, string emailTemplate, string subject, string? toEmail = null);
         Task<List<EmailResult>> SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null);
     }
 
@@ -27,6 +28,12 @@ namespace WeddingWebsite.Services
 
         public async Task<List<EmailResult>> SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null)
         {
+            return await SendEmail(userIds, "SaveTheDate.liquid", SaveTheDateSubject, toEmail);
+        }
+
+        public async Task<List<EmailResult>> SendEmail(
+            IEnumerable<string> userIds, string emailTemplate, string subject, string? toEmail = null)
+        {
             var users = await _db.Users
                 .Where(e => userIds.Contains(e.Id))
                 .AsNoTracking()
@@ -34,7 +41,7 @@ namespace WeddingWebsite.Services
 
             var emailTemplatesPath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName, "EmailTemplates");
 
-            var template = await File.ReadAllTextAsync(Path.Combine(emailTemplatesPath, "SaveTheDate.liquid"));
+            var template = await File.ReadAllTextAsync(Path.Combine(emailTemplatesPath, emailTemplate));
 
             var results = new List<EmailResult>();
 
@@ -51,7 +58,9 @@ namespace WeddingWebsite.Services
                 var emailModel = new SaveTheDateEmailModel
                 {
                     Name = user.GetGroupName(),
-                    LoginUrl = loginUrl
+                    LoginUrl = loginUrl,
+                    AccommodationName = user.GetAccommodationName(),
+                    RoomMate = user.RoomMate
                 };
 
                 var cc = string.IsNullOrWhiteSpace(toEmail)
@@ -61,10 +70,6 @@ namespace WeddingWebsite.Services
                 var result = new EmailResult { UserId = user.Id, Email = to, Cc = cc };
                 await TrySendEmail(to, cc, emailModel, result);
 
-                if (!hasToEmail && result.IsSuccess)
-                {
-                    await MarkSaveTheDateSent(user);
-                }
                 results.Add(result);
             }
 
@@ -77,7 +82,7 @@ namespace WeddingWebsite.Services
                     var email = _fluentEmail
                             .Create()
                             .To(to.Trim())
-                            .Subject(SaveTheDateSubject)
+                            .Subject(subject)
                             .UsingTemplate(template, emailModel);
 
                     if(!string.IsNullOrWhiteSpace(cc))
@@ -96,22 +101,6 @@ namespace WeddingWebsite.Services
                     emailResult.ErrorMessage = ex.Message;
                 }
             }
-
-            async Task MarkSaveTheDateSent(User user)
-            {
-                user.HasSentSaveTheDateEmail = true;
-                _db.Users.Update(user);
-               // _db.Entry(user).Property(x => x.HasSentSaveTheDateEmail).IsModified = true;
-                await _db.SaveChangesAsync();
-            }
-
-            async Task MarkSaveTheDateSentForGuest(User user)
-            {
-                user.HasSentGuestSaveTheDateEmail = true;
-                _db.Users.Update(user);
-                // _db.Entry(user).Property(x => x.HasSentSaveTheDateEmail).IsModified = true;
-                await _db.SaveChangesAsync();
-            }
         }
 
         private class SaveTheDateEmailModel
@@ -123,6 +112,9 @@ namespace WeddingWebsite.Services
 
             public string Name { get; set; }
             public string LoginUrl { get; set; }
+            public bool IsSharingAccommodation => !string.IsNullOrWhiteSpace(RoomMate);
+            public string? RoomMate { get; set; }
+            public string AccommodationName { get; set; }
         }
     }
 

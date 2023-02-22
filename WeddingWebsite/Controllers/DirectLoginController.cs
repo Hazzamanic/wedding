@@ -21,9 +21,19 @@ namespace WeddingWebsite.Controllers
         }
 
         [Route("dr")]
-        public async Task<IActionResult> Index(string code, string? returnUrl = null)
+        public async Task<IActionResult> Index(string code, string? p = null)
         {
-            returnUrl ??= Url.Content("~/");
+            var redirect = "/Home";
+
+            if (p == "f")
+            {
+                redirect = "/FAQ";
+            }
+            else if (p == "a")
+            {
+                redirect = "/Accommodation";
+            }
+
             var user = await _db.Users.FirstOrDefaultAsync(e => e.DirectLoginCode == code);
             if (user == null)
             {
@@ -37,9 +47,7 @@ namespace WeddingWebsite.Controllers
 
             });
 
-            return RedirectToPage("/Home");
-
-            return LocalRedirect(returnUrl);
+            return RedirectToPage(redirect);
         }
     }
 }

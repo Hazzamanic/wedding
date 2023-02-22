@@ -79,6 +79,7 @@ namespace WeddingWebsite.Pages
             public string GuestEmail { get; set; }
             public string GroupName { get; set; }
             public string PartyType { get; set; }
+            public string? RoomMate { get; set; }
         }
 
         public string DirectLoginCode { get; set; }
@@ -101,6 +102,7 @@ namespace WeddingWebsite.Pages
                 Name = user.Name,
                 GuestEmail = user.GuestEmail,
                 PartyType = user.PartyType,
+                RoomMate = user.RoomMate
             };
 
             DirectLoginCode = user.DirectLoginCode;
@@ -122,6 +124,7 @@ namespace WeddingWebsite.Pages
                 user.GuestName = Input.GuestName;
                 user.GuestEmail = Input.GuestEmail;
                 user.PartyType = Input.PartyType;
+                user.RoomMate = Input.RoomMate;
 
                 await _userStore.UpdateAsync(user, default);
 

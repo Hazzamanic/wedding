@@ -39,5 +39,6 @@ namespace WeddingWebsite.Data.Entities
         public string? PartyType { get; set; }
         public bool HasResponded { get; set; }
         public DateTime? RespondedAt { get; set; }
+        public string? RoomMate { get; set; }
     }
 }
