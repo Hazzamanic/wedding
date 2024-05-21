@@ -11,6 +11,7 @@ namespace WeddingWebsite.Services
     {
         Task<List<EmailResult>> SendEmail(IEnumerable<string> userIds, string emailTemplate, string subject, string? toEmail = null);
         Task<List<EmailResult>> SendSaveTheDate(IEnumerable<string> userIds, string? toEmail = null);
+        Task SendGenericEmail(string to, string subject, string htmlBody, string? cc = null);
     }
 
     public class EmailService : IEmailService
@@ -85,7 +86,7 @@ namespace WeddingWebsite.Services
                             .Subject(subject)
                             .UsingTemplate(template, emailModel);
 
-                    if(!string.IsNullOrWhiteSpace(cc))
+                    if (!string.IsNullOrWhiteSpace(cc))
                     {
                         email.CC(cc.Trim());
                     }
@@ -103,6 +104,37 @@ namespace WeddingWebsite.Services
             }
         }
 
+        public async Task SendGenericEmail(string to, string subject, string htmlBody, string? cc = null)
+        {
+            try
+            {
+                var emailTemplate = "Generic.liquid";
+                var emailTemplatesPath = Path.Combine(new FileInfo(Assembly.GetExecutingAssembly().Location).Directory!.FullName, "EmailTemplates");
+
+                var template = await File.ReadAllTextAsync(Path.Combine(emailTemplatesPath, emailTemplate));
+
+                var email = _fluentEmail
+                            .Create()
+                            .To(to.Trim())
+                            .Subject(subject)
+                            .UsingTemplate(template, new GenericEmailModel
+                            {
+                                Body = htmlBody
+                            });
+
+                if (!string.IsNullOrWhiteSpace(cc))
+                {
+                    email.CC(cc.Trim());
+                }
+
+                var result = await email.SendAsync();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
         private class SaveTheDateEmailModel
         {
             public SaveTheDateEmailModel()
@@ -115,6 +147,11 @@ namespace WeddingWebsite.Services
             public bool IsSharingAccommodation => !string.IsNullOrWhiteSpace(RoomMate);
             public string? RoomMate { get; set; }
             public string AccommodationName { get; set; }
+        }
+
+        public class GenericEmailModel
+        {
+            public string Body { get; set; }
         }
     }
 

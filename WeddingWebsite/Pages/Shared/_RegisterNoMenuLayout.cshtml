@@ -1,0 +1,122 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using WeddingWebsite.Data.Entities
+@using WeddingWebsite.Extensions;
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@{
+    var isLoggedIn = SignInManager.IsSignedIn(User);
+    User? user = isLoggedIn ? await UserManager.GetUserAsync(User) : null;
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Wedding</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/register.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Rock+Salt&display=swap" rel="stylesheet">
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body>
+    @if (isLoggedIn)
+    {
+        <header>
+
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Home">Harry Gets Knighted</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Home">Itinerary</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Accommodation">Accommodation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Travel">Travel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/FAQ">FAQ</a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav">
+                            @if (isLoggedIn)
+                            {
+                                var name = user.GetGroupName();
+                                <li class="nav-item">
+                                    <span class="nav-link text-dark">Hello @name!</span>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link btn btn-primary text-light" style="padding-right: 20px; padding-left: 20px" asp-area="" asp-page="/Register">RSVP</a>
+                                </li>
+
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+    }
+    @if (isLoggedIn && !user.HasResponded)
+    {
+        <div class="section-purple">
+            <div class="container fw-bold p-2 text-center" style="font-size: 18px">
+                <a asp-page="/register" class="text-white">Click here to RSVP</a>
+            </div>
+        </div>
+    }
+    <div class="">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @if (isLoggedIn)
+    {
+        <footer class="border-top footer text-muted" style="background-color: white">
+            <div class="container">
+                <ul class="navbar-nav flex-grow-1 flex-column flex-sm-row justify-content-between">
+                    <li class="nav-item p-3">
+                        <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Home">Itinerary</a>
+                    </li>
+                    <li class="nav-item p-3">
+                        <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Accommodation">Accommodation</a>
+                    </li>
+                    <li class="nav-item p-3">
+                        <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Travel">Travel</a>
+                    </li>
+                    <li class="nav-item p-3">
+                        <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/FAQ">FAQ</a>
+                    </li>
+                    <li class="nav-item p-3">
+                        <a class="nav-link text-dark text-decoration-underline fw-bold" asp-area="" asp-page="/Register">RSVP</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

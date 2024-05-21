@@ -29,7 +29,7 @@ namespace WeddingWebsite.Data
         public int? NumberAvailable { get; set; }
         public decimal OrderingPosition { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; } = new();
     }
 
     public class Order

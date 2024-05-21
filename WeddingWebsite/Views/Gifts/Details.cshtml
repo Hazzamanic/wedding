@@ -1,0 +1,134 @@
+﻿@model WeddingWebsite.Controllers.GiftViewModel
+@{
+    Layout = "~/Views/Shared/_GiftsLayout.cshtml";
+
+    var numberAvailable = Model.NumberAvailable is null ? "Unlimited" : $"{Model.NumberAvailable} available";
+}
+
+<div class="container">
+    <div class="row">
+        @*        <h2>
+        You've chosen to buy Sinead & Harry...
+        </h2>*@
+        <div class="row">
+            <div class="col-sm-3">
+                <img src="@Model.ImageUrl" class="card-img" alt="@Model.Title" style="object-fit:cover; width:100%">
+            </div>
+            <div class="col-sm-9">
+                <span class="text-muted fst-italic">You've chosen to buy Sinead & Harry...</span>
+                <h3>
+                    @Model.Title
+                </h3>
+                <span class="fw-bold fst-italic">
+                    £@Model.Price
+                </span>
+                •
+                <span class="fst-italic">
+                    @numberAvailable
+                </span>
+                <div>
+                    @Html.Raw(Model.Description)
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4 mt-4" />
+        @if (Model.IsAvilable)
+        {
+
+            <form method="post" asp-action="Create">
+                <input type="hidden" asp-for=Order.GiftId />
+                <div class="mb-5">
+                    <h3 class="h-purple">How does this work?</h3>
+                    <p>
+                        Once you've chosen a gift, you can enter how much you would you like to contribute below and fill in your details, then click Buy at the bottom!<br />
+                        You will be taken to a confirmation page with details about how you can make your contribution, either by:
+                        <ul>
+                            <li>Bank transfer, or</li>
+                            <li>By direct link via Monzo with your debit card (no Monzo account required)</li>
+                        </ul>
+                        If you're have any difficulty, just contact Sinead or Harry x
+                    </p>
+                </div>
+                <div class="mb-5">
+                    <h3 class="h-purple">How much would you like to contribute towards this gift?</h3>
+                    <p>
+                        You are free to contribute as much or as little towards this gift as you would like.
+                    </p>
+                    @*                <p>
+                <span class="btn btn-outline-primary">100%</span>
+                <span class="btn btn-outline-primary">50%</span>
+                </p>*@
+                    <div class="form-group row mb-4">
+                        <label asp-for="Order.ContributionAmount" class="col-sm-2 col-form-label">Contribution</label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1">£</span>
+                                <input asp-for="Order.ContributionAmount" type="text" inputmode="numeric" pattern="[0-9]+([\.,][0-9]+)?" class="form-control" />
+                            </div>
+                            @if (Model.PledgedToAnItem > 0)
+                            {
+                                <span class="text-muted">Currently £@Model.PledgedToAnItem / £@Model.Price has already been contributed</span>
+                            }
+                            <span asp-validation-for="Order.ContributionAmount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="h-purple">Your details</h3>
+                    <div class="form-group row mb-4">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <input asp-for="Order.Name" type="text" required class="form-control" />
+                            <span asp-validation-for="Order.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label asp-for="Order.Email" class="col-sm-2 col-form-label">Email (optional)</label>
+                        <div class="col-sm-10">
+                            <input asp-for="Order.Email" type="email" class="form-control" />
+                            <span class="text-muted">Fill this in if you would like a confirmation email.</span>
+                            <span asp-validation-for="Order.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label asp-for=Order.Message class="col-sm-2 col-form-label">Message (optional)</label>
+                        <div class="col-sm-10">
+                            <textarea asp-for=Order.Message class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-primary">Buy</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        }
+        else
+        {
+            <span class="fst-italic">
+                Thank you, this gift has been bought for us
+            </span>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var monzolink = "https://monzo.me/harrywestbrook/";
+        $(function () {
+            $('#Order_ContributionAmount').on('input', function (e) {
+                var val = $(this).val();
+                var amount = "1";
+                if (val) {
+                    amount = val;
+                }
+
+                $("#monzo-link").attr("href", monzolink + amount);
+            });
+        })
+    </script>
+}

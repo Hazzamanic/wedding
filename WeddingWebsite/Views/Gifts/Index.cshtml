@@ -1,0 +1,56 @@
+﻿@model WeddingWebsite.Controllers.GiftListViewModel
+@{
+    Layout = "~/Views/Shared/_GiftsLayout.cshtml";
+}
+
+<div class="container">
+    <div>
+        <p class="text-center">
+            As we have previously mentioned, by no means do we expect anything more from you - we are so grateful that you are making the trip to Portugal for us, that it really is enough of a gift.
+        </p>
+        <p class="text-center">
+            For those who still wish to make a gesture, below you will find a few suggestions of things you could contribute to on our honeymoon in Portugal. 
+            Payment will not be taken directly through this website and instead we will need to receive by bank transfer or a direct Monzo payment - details follow on the gift page. We have done this so we avoid you paying any additional fees through a 3rd party.
+        </p>
+
+    </div>
+    <div class="row">
+        @foreach (var gift in Model.Gifts)
+        {
+            var numberAvailable = gift.NumberAvailable is null ? "Unlimited" : $"{gift.NumberAvailable} available";
+
+            <div class="col-xl-4 col-md-6 mb-4">
+                <div class="card border-0 shadow" style="height:100%">
+                    <img src="@gift.ImageUrl" class="card-img-top" alt="@gift.Title" style="object-fit:cover; height:240px; width:100%">
+                    <div class="card-body" style="">
+
+                        <h5 class="card-title text-center mb-0">@gift.Title</h5>
+                        @if (gift.IsAvilable)
+                        {
+                            <div class="card-text text-black-50 text-center">@numberAvailable</div>
+                        }
+
+                    </div>
+                    <div class="card-footer">
+                        @if (gift.IsAvilable)
+                        {
+                            <div class="text-start d-flex justify-content-between align-items-center">
+                                <span>£@gift.Price</span>
+                                <a asp-action="Details" asp-route-id="@gift.Id" class="btn btn-sm btn-outline-primary stretched-link">Gift</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <span class="fst-italic">
+                                Thank you, this gift has been bought for us
+                            </span>
+                            <a asp-action="Details" asp-route-id="@gift.Id" class="stretched-link"></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <!-- image: https://source.unsplash.com/TMgQMXoglsM/500x350 -->
+
+</div>

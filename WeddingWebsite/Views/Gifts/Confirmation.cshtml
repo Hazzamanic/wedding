@@ -1,0 +1,60 @@
+﻿@model WeddingWebsite.Controllers.OrderConfirmationViewModel
+@{
+    Layout = "~/Views/Shared/_GiftsLayout.cshtml";
+
+    var contribution = Model.ContributionAmount.ToString();
+
+    var message = Uri.EscapeDataString($"{Model.GiftTitle} from {Model.From}");
+}
+
+<div class="container">
+    <div>
+    </div>
+    <div class="row">
+        @*        <h2>
+        You've chosen to buy Sinead & Harry...
+        </h2>*@
+        <div class="row">
+            <div class="col-sm-3">
+                <img src="@Model.GiftImageUrl" class="card-img" alt="@Model.GiftTitle" style="object-fit:cover; width:100%">
+            </div>
+            <div class="col-sm-9">
+                <span class="text-muted fst-italic">You've chosen to buy Sinead & Harry...</span>
+                <h3>
+                    @Model.GiftTitle
+                </h3>
+                <span class="text-muted fst-italic">and contributed...</span>
+                <h3>
+                    £@Model.ContributionAmount
+                </h3>
+                <div>
+                    We cant thank you enough for your generosity and cant wait to see you in Portugal! We'll be sure to send you some annoying photos of us enjoying this gift ❤️
+                </div>
+            </div>
+        </div>
+        <hr class="mb-4 mt-4" />
+        <div class="mb-5">
+            <h3 class="h-purple mb-4">How to pay for your gift?</h3>
+            <div class="mb-4">
+                <h4 class="mb-3">Card</h4>
+                <div class="mb-2">
+                    <a target="_blank" id="monzo-link" href="https://monzo.me/harrywestbrook/@contribution?d=@message" class="btn btn-primary">Pay direct via Monzo</a>
+                </div>
+                <p class="text-muted">
+                    Clicking this link will take you to Monzo where you can pay us using your debit card. If you have a Monzo account, it will also offer you the option make a direct payment ❤
+                </p>
+            </div>
+            <div>
+                <h4>Bank Transfer</h4>
+                <p>
+                    <span class="d-block mb-3">
+                        You can pay via bank transfer with the details below
+                    </span>
+                    Name: Sinead Westbrook-Knight <br />
+                    Account Number: 9935 6764 <br />
+                    Sort Code: 04 00 04
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

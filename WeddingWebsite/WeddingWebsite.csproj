@@ -9,12 +9,20 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Remove="appsettings*.json" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="EmailTemplates\AccommodationConfirmation.liquid" />
+	  <None Remove="EmailTemplates\Generic.liquid" />
 	  <None Remove="EmailTemplates\SaveTheDate.liquid" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Content Include="EmailTemplates\AccommodationConfirmation.liquid">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	  <Content Include="EmailTemplates\Generic.liquid">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
 	  <Content Include="EmailTemplates\SaveTheDate.liquid">
